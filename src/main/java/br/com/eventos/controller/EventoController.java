@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.eventos.core.Evento.Commands.CreateEventoCommand;
 import br.com.eventos.domain.Evento;
 import br.com.eventos.repository.EventoRepository;
+import br.com.eventos.viewmodel.EventoViewModel;
 
 @RestController
 @RequestMapping("/eventos")
@@ -19,15 +21,17 @@ public class EventoController {
 	private EventoRepository eventoRepository;
 	
 	@GetMapping
-	public List<Evento> ListaEventos() {
+	public List<EventoViewModel> ListaEventos() {
 		
-		return eventoRepository.findAll();
+		var listaEventos = eventoRepository.findAll();
+		
+		return new EventoViewModel().converter(listaEventos);
 	}
 	
 	@PostMapping
-	public boolean CreateEvento(Evento evento) {
+	public boolean CreateEvento(CreateEventoCommand command) {
 		
-		eventoRepository.save(evento);
+		eventoRepository.save(command.converter());
 		
 		return true;
 	}

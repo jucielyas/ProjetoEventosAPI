@@ -1,38 +1,29 @@
-package br.com.eventos.domain;
+package br.com.eventos.dto;
 
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import br.com.eventos.domain.Categoria;
+import br.com.eventos.domain.Evento;
 
-@Entity
-public class Evento {
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class EventoDTO {
 	private Long id;
 	private int idEndereco;
 	private String nome;
 	private Date  data;
 	private String descricao;
-	@ManyToOne
 	private Categoria categoria;
 	
-	
-	public Evento(int idEndereco, String nome, Date data, String descricao, Categoria categoria) {
-		super();
-		this.idEndereco = idEndereco;
-		this.nome = nome;
-		this.data = data;
-		this.descricao = descricao;
-		this.categoria = categoria;
+	public EventoDTO(Evento evento) {
+		this.id = evento.getId();
+		this.idEndereco = evento.getIdEndereco();
+		this.nome = evento.getNome();
+		this.data = evento.getData();
+		this.descricao = evento.getDescricao();
 	}
 	
-	public Evento() {
-		
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -43,14 +34,6 @@ public class Evento {
 	public int getIdEndereco() {
 		return idEndereco;
 	}
-	public Categoria getCategoria() {
-		return categoria;
-	}
-
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
-	}
-
 	public void setIdEndereco(int idEndereco) {
 		this.idEndereco = idEndereco;
 	}
@@ -72,5 +55,9 @@ public class Evento {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-
+	
+	public static List<EventoDTO> converter(List<Evento> topicos) {
+		return topicos.stream().map(EventoDTO::new).collect(Collectors.toList());
+	}
+	
 }
