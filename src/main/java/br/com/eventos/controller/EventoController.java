@@ -25,7 +25,7 @@ public class EventoController {
 		
 		var listaEventos = eventoRepository.findAll();
 		
-		return new EventoViewModel().converter(listaEventos);
+		return EventoViewModel.converter(listaEventos);
 	}
 	
 	@PostMapping
